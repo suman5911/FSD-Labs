@@ -1,0 +1,55 @@
+.site-header {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding: 20px;
+    background-color: white;
+    border-bottom: 1px solid #ccc;
+}
+
+.site-header img {
+    width: 120px;
+    height: auto;
+}
+
+.site-header h1 {
+    margin: 0 0 8px;
+}
+
+.site-header p {
+    margin: 0;
+}
+
+.employee-directory {
+    width: 90%;
+    max-width: 1000px;
+    margin: 30px auto;
+}
+
+.department {
+    margin-bottom: 20px;
+    padding: 20px;
+    background-color: white;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+.department h2 {
+    margin-top: 0;
+}
+
+.department ul {
+    margin-bottom: 0;
+    padding-left: 25px;
+}
+
+.department li {
+    margin-bottom: 6px;
+}
+
+footer {
+    padding: 20px;
+    text-align: center;
+    background-color: white;
+    border-top: 1px solid #ccc;
+}
