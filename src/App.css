@@ -96,3 +96,49 @@ footer {
     margin: 0;
     color: #b00020;
 }
+
+.site-nav {
+    display: flex;
+    gap: 20px;
+    padding: 15px 20px;
+    background-color: white;
+    border-bottom: 1px solid #ccc;
+}
+
+.site-nav a {
+    color: #222;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.site-nav a:hover {
+    text-decoration: underline;
+}
+
+.organization {
+    width: 90%;
+    max-width: 1000px;
+    margin: 30px auto;
+}
+
+.organization-list {
+    background-color: white;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+.organization-person {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    padding: 12px 15px;
+    border-bottom: 1px solid #ddd;
+}
+
+.organization-person:last-child {
+    border-bottom: none;
+}
+
+.organization-person span:last-child {
+    text-align: right;
+}

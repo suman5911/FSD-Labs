@@ -1,47 +1,68 @@
 import { useState } from "react";
+import { Navigate, Route, Routes } from "react-router-dom";
 import "./App.css";
 import employeeData from "./data/employees.json";
-import { Header } from "./components/Header";
-import { EmployeeDirectory } from "./components/EmployeeDirectory";
-import { EmployeeForm } from "./components/EmployeeForm";
-import { Footer } from "./components/Footer";
+import { Employees } from "./components/Employees";
+import { Organization } from "./components/Organization";
+import { Layout } from "./components/Layout";
 import type { Department } from "./models/employee";
 
 function App() {
     const [departments, setDepartments] =
         useState<Department[]>(employeeData);
 
-    function addEmployee(firstName: string, departmentName: string) {
-        const updatedDepartments = departments.map((department) => {
-            if (department.name === departmentName) {
-                return {
-                    ...department,
-                    employees: [
-                        ...department.employees,
-                        { firstName: firstName },
-                    ],
-                };
-            }
+    function addEmployee(
+        firstName: string,
+        departmentName: string
+    ) {
+        const updatedDepartments = departments.map(
+            (department) => {
+                if (department.name === departmentName) {
+                    return {
+                        ...department,
+                        employees: [
+                            ...department.employees,
+                            { firstName: firstName },
+                        ],
+                    };
+                }
 
-            return department;
-        });
+                return department;
+            }
+        );
 
         setDepartments(updatedDepartments);
     }
 
     return (
-        <>
-            <Header />
+        <Routes>
+            <Route path="/" element={<Layout />}>
+                <Route
+                    index
+                    element={
+                        <Navigate
+                            to="/employees"
+                            replace
+                        />
+                    }
+                />
 
-            <EmployeeDirectory departments={departments} />
+                <Route
+                    path="employees"
+                    element={
+                        <Employees
+                            departments={departments}
+                            onAddEmployee={addEmployee}
+                        />
+                    }
+                />
 
-            <EmployeeForm
-                departments={departments}
-                onAddEmployee={addEmployee}
-            />
-
-            <Footer />
-        </>
+                <Route
+                    path="organization"
+                    element={<Organization />}
+                />
+            </Route>
+        </Routes>
     );
 }
 
