@@ -1,71 +1,48 @@
-import { useState } from "react";
+
 import type { FormEvent } from "react";
+import { useFormInput } from "../hooks/useFormInput";
 import type { Department } from "../models/employee";
+import type { AddEmployeeResult } from "../services/employeeService";
 
 interface EmployeeFormProps {
     departments: Department[];
     onAddEmployee: (
         firstName: string,
         departmentName: string
-    ) => void;
+    ) => AddEmployeeResult;
 }
 
 export function EmployeeForm({
     departments,
     onAddEmployee,
 }: EmployeeFormProps) {
-    const [firstName, setFirstName] = useState("");
-    const [departmentName, setDepartmentName] = useState("");
-
-    const [firstNameError, setFirstNameError] = useState("");
-    const [departmentError, setDepartmentError] = useState("");
-
-    function handleFirstNameChange(value: string) {
-        setFirstName(value);
-
-        if (value.trim().length >= 3) {
-            setFirstNameError("");
-        }
-    }
-
-    function handleDepartmentChange(value: string) {
-        setDepartmentName(value);
-
-        if (value !== "") {
-            setDepartmentError("");
-        }
-    }
+    const firstName = useFormInput();
+    const departmentName = useFormInput();
 
     function handleSubmit(event: FormEvent<HTMLFormElement>) {
         event.preventDefault();
 
-        setFirstNameError("");
-        setDepartmentError("");
+        const result = onAddEmployee(
+            firstName.value,
+            departmentName.value
+        );
 
-        let isValid = true;
+        firstName.validate(() =>
+            result.firstNameError
+                ? [result.firstNameError]
+                : []
+        );
 
-        if (firstName.trim().length < 3) {
-            setFirstNameError(
-                "First name must have at least 3 characters."
-            );
-            isValid = false;
+        departmentName.validate(() =>
+            result.departmentError
+                ? [result.departmentError]
+                : []
+        );
+
+        if (result.success) {
+            firstName.reset();
+            departmentName.reset();
         }
-
-        if (departmentName === "") {
-            setDepartmentError(
-                "Please select a department."
-            );
-            isValid = false;
-        }
-
-        if (!isValid) {
-            return;
-        }
-
-        onAddEmployee(firstName.trim(), departmentName);
-
-        setFirstName("");
-        setDepartmentName("");
     }
 
     return (
@@ -84,19 +61,22 @@ export function EmployeeForm({
                     <input
                         id="first-name"
                         type="text"
-                        value={firstName}
+                        value={firstName.value}
                         onChange={(event) =>
-                            handleFirstNameChange(
+                            firstName.changeValue(
                                 event.target.value
                             )
                         }
                     />
 
-                    {firstNameError && (
-                        <p className="validation-error">
-                            {firstNameError}
+                    {firstName.messages.map((message) => (
+                        <p
+                            className="validation-error"
+                            key={message}
+                        >
+                            {message}
                         </p>
-                    )}
+                    ))}
                 </div>
 
                 <div>
@@ -106,9 +86,9 @@ export function EmployeeForm({
 
                     <select
                         id="department"
-                        value={departmentName}
+                        value={departmentName.value}
                         onChange={(event) =>
-                            handleDepartmentChange(
+                            departmentName.changeValue(
                                 event.target.value
                             )
                         }
@@ -127,11 +107,14 @@ export function EmployeeForm({
                         ))}
                     </select>
 
-                    {departmentError && (
-                        <p className="validation-error">
-                            {departmentError}
+                    {departmentName.messages.map((message) => (
+                        <p
+                            className="validation-error"
+                            key={message}
+                        >
+                            {message}
                         </p>
-                    )}
+                    ))}
                 </div>
 
                 <button type="submit">
