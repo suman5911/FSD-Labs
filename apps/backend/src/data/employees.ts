@@ -1,8 +1,10 @@
-[
+import type { Department } from "../models/employee.js";
+
+export const employeeData: Department[] = [
     {
         "name": "Administration",
         "employees": [
-            { "firstName": "Zoë", "lastName": "Robins" },
+            { "firstName": "ZoÃ«", "lastName": "Robins" },
             { "firstName": "Madeleine", "lastName": "Madden" }
         ]
     },
@@ -18,7 +20,7 @@
         "employees": [
             { "firstName": "Priyanka", "lastName": "Bose" },
             { "firstName": "Hammed", "lastName": "Animashaun" },
-            { "firstName": "Álvaro", "lastName": "Morte" },
+            { "firstName": "Ãlvaro", "lastName": "Morte" },
             { "firstName": "Taylor", "lastName": "Napier" },
             { "firstName": "Alan", "lastName": "Simmonds" }
         ]
@@ -62,7 +64,7 @@
         "employees": [
             { "firstName": "Jesse Ed", "lastName": "Azure" },
             { "firstName": "Stacy", "lastName": "Da Silva" },
-            { "firstName": "Vladimír", "lastName": "Valenta" },
+            { "firstName": "VladimÃ­r", "lastName": "Valenta" },
             { "firstName": "Samone", "lastName": "Sayeses-Whitney" },
             { "firstName": "Paul", "lastName": "Coeur" }
         ]
@@ -90,4 +92,4 @@
             { "firstName": "Onatah", "lastName": "Redhawk" }
         ]
     }
-]
+];
