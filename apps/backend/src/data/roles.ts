@@ -1,4 +1,4 @@
-import type { Role } from "../models/role";
+import type { Role } from "../models/role.js";
 
 export const roles: Role[] = [
     {

@@ -1,75 +1,22 @@
-# React + TypeScript + Vite
+# PiXELL-River Financial Employee and Organization App
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Full Stack Development labs, extended from Lab 3.2.
 
-Currently, two official plugins are available:
+## Folders
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- `apps/frontend`: React, Vite and TypeScript
+- `apps/backend`: Express and TypeScript
+- `shared/types`: Employee, Department and Role TypeScript types
 
-## React Compiler
+## Local setup
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+1. Run `npm install` from the project root.
+2. Copy the `.env.example` files to `.env` in both apps.
+3. Run `npm run dev` from the project root.
+4. Open the local Vite URL shown in the terminal.
 
-## Expanding the ESLint configuration
+The back-end uses port 3000, and Vite normally uses port 5173.
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+Run `npm run build` to check both applications.
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-
-```
-
-You can also install [eslint-plugin-react-x](https://npmx.dev/package/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://npmx.dev/package/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-
-```
+Lab 4.1 uses temporary data in the back-end. Lab 4.2 adds PostgreSQL and Prisma.
