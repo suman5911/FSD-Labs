@@ -2,13 +2,21 @@ import type { Request, Response } from "express";
 import { employeeService } from "../services/employeeService.js";
 
 export const employeeController = {
-    getDepartments(_request: Request, response: Response) {
-        response.json(employeeService.getDepartments());
+    async getDepartments(_request: Request, response: Response) {
+        try {
+            response.json(await employeeService.getDepartments());
+        } catch {
+            response.status(500).json({ message: "Unable to load departments." });
+        }
     },
 
-    createEmployee(request: Request, response: Response) {
-        const { firstName, departmentName } = request.body ?? {};
-        const result = employeeService.createEmployee(firstName, departmentName);
-        response.status(result.success ? 201 : 400).json(result);
+    async createEmployee(request: Request, response: Response) {
+        try {
+            const { firstName, departmentName } = request.body ?? {};
+            const result = await employeeService.createEmployee(firstName, departmentName);
+            response.status(result.success ? 201 : 400).json(result);
+        } catch {
+            response.status(500).json({ message: "Unable to save employee." });
+        }
     },
 };
