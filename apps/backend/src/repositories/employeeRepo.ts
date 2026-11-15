@@ -1,26 +1,29 @@
-import { employeeData } from "../data/employees.js";
+import { prisma } from "../database/prisma.js";
 import type { Department, Employee } from "../models/employee.js";
 
-let departments: Department[] = employeeData.map((department) => ({
-    ...department,
-    employees: department.employees.map((employee) => ({ ...employee })),
-}));
-
 export const employeeRepo = {
-    getDepartments(): Department[] {
+    async getDepartments(): Promise<Department[]> {
+        const departments = await prisma.department.findMany({
+            include: { employees: true },
+            orderBy: { name: "asc" },
+        });
+
         return departments.map((department) => ({
-            ...department,
-            employees: department.employees.map((employee) => ({ ...employee })),
+            name: department.name,
+            employees: department.employees.map((employee) => ({
+                firstName: employee.firstName,
+                ...(employee.lastName ? { lastName: employee.lastName } : {}),
+            })),
         }));
     },
 
-    createEmployee(firstName: string, departmentName: string): Employee {
-        const newEmployee: Employee = { firstName };
-        departments = departments.map((department) =>
-            department.name === departmentName
-                ? { ...department, employees: [...department.employees, newEmployee] }
-                : department
-        );
-        return newEmployee;
+    async createEmployee(firstName: string, departmentName: string): Promise<Employee> {
+        const employee = await prisma.employee.create({
+            data: {
+                firstName,
+                department: { connect: { name: departmentName } },
+            },
+        });
+        return { firstName: employee.firstName, ...(employee.lastName ? { lastName: employee.lastName } : {}) };
     },
 };

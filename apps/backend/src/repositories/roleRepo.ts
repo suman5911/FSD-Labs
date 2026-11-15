@@ -1,16 +1,24 @@
-import { roles } from "../data/roles.js";
+import { prisma } from "../database/prisma.js";
 import type { Role } from "../models/role.js";
 
-let organization: Role[] = roles.map((person) => ({ ...person }));
-
 export const roleRepo = {
-    getRoles(): Role[] {
-        return organization.map((person) => ({ ...person }));
+    async getRoles(): Promise<Role[]> {
+        const roles = await prisma.role.findMany({ orderBy: { id: "asc" } });
+        return roles.map((person) => ({
+            firstName: person.firstName,
+            lastName: person.lastName,
+            role: person.title,
+        }));
     },
 
-    createRole(person: Role): Role {
-        const newPerson = { ...person };
-        organization = [...organization, newPerson];
-        return newPerson;
+    async createRole(person: Role): Promise<Role> {
+        const result = await prisma.role.create({
+            data: {
+                title: person.role,
+                firstName: person.firstName,
+                lastName: person.lastName,
+            },
+        });
+        return { firstName: result.firstName, lastName: result.lastName, role: result.title };
     },
 };

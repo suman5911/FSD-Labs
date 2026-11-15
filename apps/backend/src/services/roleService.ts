@@ -8,11 +8,11 @@ export interface AddRoleResult {
 }
 
 export const roleService = {
-    getRoles() {
+    async getRoles() {
         return roleRepo.getRoles();
     },
 
-    createRole(firstName: unknown, lastName: unknown, role: unknown): AddRoleResult {
+    async createRole(firstName: unknown, lastName: unknown, role: unknown): Promise<AddRoleResult> {
         const cleanFirstName = typeof firstName === "string" ? firstName.trim() : "";
         const cleanLastName = typeof lastName === "string" ? lastName.trim() : "";
         const cleanRole = typeof role === "string" ? role.trim() : "";
@@ -23,7 +23,7 @@ export const roleService = {
         const lastNameError = cleanLastName ? "" : "Last name is required.";
         let roleError = cleanRole ? "" : "Role is required.";
 
-        if (cleanRole && roleRepo.getRoles().some(
+        if (cleanRole && (await roleRepo.getRoles()).some(
             (person) => person.role.toLowerCase() === cleanRole.toLowerCase()
         )) {
             roleError = "This role is already occupied.";
@@ -33,7 +33,7 @@ export const roleService = {
             return { success: false, firstNameError, lastNameError, roleError };
         }
 
-        roleRepo.createRole({ firstName: cleanFirstName, lastName: cleanLastName, role: cleanRole });
+        await roleRepo.createRole({ firstName: cleanFirstName, lastName: cleanLastName, role: cleanRole });
         return { success: true, firstNameError: "", lastNameError: "", roleError: "" };
     },
 };
